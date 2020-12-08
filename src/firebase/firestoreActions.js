@@ -1,4 +1,4 @@
-import {firestore} from "./config"
+import {firestore, auth} from "./config"
 
 // export const getUserName = (uid) => {
     // firestore.collection("users").get().where("uid" == uid)
@@ -16,6 +16,31 @@ export const createUserData = async(userData, username) => {
         email: userData.email
     }
     await firestore.collection("users").doc(username).set(userObj)
+}
+
+export const createPost = (body, username) => {
+    let postObject = {
+        username,
+        body,
+        createdAt: new Date().toISOString(),
+        userId: auth.currentUser.uid
+    }
+    firestore.collection("posts").add(postObject)
+    .then(() => console.log("Post created successfully"))
+    .catch(err=>console.error(err.message))
+        
+}
+// collection("cities").doc("DC").delete().then(function() {
+//     console.log("Document successfully deleted!");
+// }).catch(function(error) {
+//     console.error("Error removing document: ", error);
+// });
+export const deletePost = (postId) => {
+    console.log(postId)
+    firestore.collection("posts").doc(postId)
+    .delete()
+    .then(() => console.log("post deleted"))
+    .catch(err => console.error(err.message)) 
 }
 // db.collection("cities").where("capital", "==", true)
 //     .get()

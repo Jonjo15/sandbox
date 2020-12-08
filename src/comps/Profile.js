@@ -14,7 +14,8 @@ const useStyles = makeStyles({
       minWidth: 275,
       minHeight: 200,
       position: "relative",
-      marginRight: 20
+      marginRight: 20,
+      marginLeft: 15
     },
     button: {
         position: "absolute",

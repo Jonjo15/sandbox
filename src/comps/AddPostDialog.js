@@ -1,41 +1,44 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import {createPost} from "../firebase/firestoreActions"
+import { useCredentials } from '../hooks/useCredentials';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function AddPostDialog({open, setOpen}) {
 //   const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+  const [text, setText] = useState("")
+  const {credentials} = useCredentials()
+  const handlePost =async e => {
+    try {
+        createPost(text, credentials.username)
+    }
+    catch {
+        alert("something went wrong")
+    }
+    setOpen(false)
+    setText("")
+  }
+  const handleClose = e => {
+      setOpen(false)
+  }
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
-      </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
-          </DialogContentText>
+      <Dialog maxWidth="md" open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogContent className="post-dialog">
           <TextField
             autoFocus
-            margin="dense"
+            multiline
+            rows="3"
             id="name"
-            label="Email Address"
-            type="email"
+            label="What's on your mind?"
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
             fullWidth
           />
         </DialogContent>
@@ -43,8 +46,8 @@ export default function AddPostDialog({open, setOpen}) {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
+          <Button onClick={handlePost} color="primary">
+            Post
           </Button>
         </DialogActions>
       </Dialog>

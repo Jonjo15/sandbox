@@ -29,3 +29,13 @@ code {
 a {
   text-decoration: none;
 }
+.post-dialog {
+  width: 450px;
+  height: 90px;
+}
+.ind-post {
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 20px;
+  position: relative;
+}
