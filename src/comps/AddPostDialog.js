@@ -5,17 +5,18 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import {createPost} from "../firebase/firestoreActions"
-import { useCredentials } from '../hooks/useCredentials';
+// import { useCredentials } from '../hooks/useCredentials';
+import {useUser} from "../context/context"
 // import DialogContentText from '@material-ui/core/DialogContentText';
 // import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function AddPostDialog({open, setOpen}) {
 //   const [open, setOpen] = React.useState(false);
   const [text, setText] = useState("")
-  const {credentials} = useCredentials()
+  const {credentials} = useUser()
   const handlePost =async e => {
     try {
-        createPost(text, credentials.username)
+        createPost(text, credentials)
     }
     catch {
         alert("something went wrong")

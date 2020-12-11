@@ -2,16 +2,16 @@ import IconButton from "@material-ui/core/IconButton"
 import {auth} from "../firebase/config"
 import {useState} from "react"
 import DeleteIcon from '@material-ui/icons/Delete';
-import DeletePostDialog from "./DeletePostDialog"
+import DeleteCommentDialog from "./DeleteCommentDialog"
 import Tooltip from '@material-ui/core/Tooltip';
 
-const DeleteButton = ({userId, postId}) => {
+const DeleteCommentButton = ({userId, commentId, postId}) => {
     const [open, setOpen] = useState(false)
     const markup = auth.currentUser.uid === userId ? (
     <Tooltip title="Delete">
-        <IconButton aria-label="delete" onClick={() => setOpen(!open)} className="delete-post">
+        <IconButton aria-label="delete" onClick={() => setOpen(!open)} className="delete-comment">
             <DeleteIcon />
-            <DeletePostDialog open={open} setOpen={setOpen} postId={postId}/>
+            <DeleteCommentDialog postId={postId} open={open} setOpen={setOpen} commentId={commentId}/>
         </IconButton>
     </Tooltip>)
      :
@@ -20,4 +20,4 @@ const DeleteButton = ({userId, postId}) => {
       return <>{markup}</>
 }
 
-export default DeleteButton
+export default DeleteCommentButton

@@ -8,15 +8,17 @@ import PrivateRoute from "./comps/PrivateRoute"
 function App() {
   // const [value, setValue] = useState({name:"ivan", surname:"batur", age:23})
   return (
-    <div className="App">
+    <div>
       
         <BrowserRouter>
           <ContextProvider>
             <Navbar />
               <Switch>
+              <div className="App">
                 <PrivateRoute exact path="/" component={Home}/>
                 <Route  path="/signup" component={Signup}/>
                 <Route  path="/login" component={Login}/>
+              </div>
               </Switch>
           </ContextProvider>
         </BrowserRouter>

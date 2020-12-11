@@ -3,13 +3,13 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import { DialogContentText } from '@material-ui/core';
-import {deletePost} from "../firebase/firestoreActions"
+import {deleteComment} from "../firebase/firestoreActions"
 
 
-export default function DeletePostDialog({open, setOpen, postId}) {
-  const handlePost = e => {
+export default function DeleteCommentDialog({open, setOpen, commentId, postId}) {
+  const handleDelete = e => {
     try {
-        deletePost(postId)
+        deleteComment(commentId, postId)
     }
     catch {
         console.log("error")
@@ -21,12 +21,12 @@ export default function DeletePostDialog({open, setOpen, postId}) {
   return (
     <div>
       <Dialog maxWidth="md" open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogContentText>Are you sure you want to delete your post</DialogContentText>
+        <DialogContentText>Are you sure you want to delete your comment</DialogContentText>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handlePost} color="primary">
+          <Button onClick={handleDelete} color="primary">
             Delete
           </Button>
         </DialogActions>

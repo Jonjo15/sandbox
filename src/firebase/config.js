@@ -8,6 +8,7 @@ import firebase from "firebase/app";
 // Add the Firebase products that you want to use
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage"
 
 var firebaseConfig = {
     apiKey: "AIzaSyBOI9CbRfXhx8u-aOPb66yxcy5aTVqR1o0",
@@ -20,7 +21,9 @@ var firebaseConfig = {
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-
-  export const auth = firebase.auth()
-  export const firestore = firebase.firestore()
-  export const timestamp = firebase.firestore.FieldValue.serverTimestamp;
+   const auth = firebase.auth()
+   const firestore = firebase.firestore()
+   const storage = firebase.storage();
+  const timestamp = firebase.firestore.FieldValue.serverTimestamp;
+  const increment = firebase.firestore.FieldValue.increment;
+  export {timestamp, storage, auth, firestore, increment}

@@ -6,7 +6,7 @@ const useFirestore = (collection) => {
 
 
     useEffect(() => {
-        firestore.collection(collection)
+        const unsub = firestore.collection(collection)
         .orderBy("createdAt", "desc")
         .onSnapshot(snap => {
             let docs = []
@@ -16,6 +16,7 @@ const useFirestore = (collection) => {
             // console.log(docs)
             setPosts(docs)
         })
+        return () => unsub()
     }, [collection])
 
     return {posts}

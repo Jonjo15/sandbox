@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react"
 import {auth} from "../firebase/config"
-import {createUserData} from "../firebase/firestoreActions"
+import {createUserData, getUserCredentials} from "../firebase/firestoreActions"
 import {useHistory} from "react-router-dom"
 const userContext = React.createContext()
 
@@ -8,7 +8,7 @@ export const useUser = () => useContext(userContext)
 
 export function ContextProvider({children}) {
     const [user, setUser] = useState(null)
-    // const [credentials, setCredentials] = useState({})
+    const [credentials, setCredentials] = useState({})
     const [loading, setLoading] = useState(true)
     const [email, setEmail] = useState("")
     const [userId, setUserId] = useState("")
@@ -32,8 +32,12 @@ export function ContextProvider({children}) {
         .then((data) => {
             setEmail(data.user.email)
             setUserId(data.user.uid)
+            return getUserCredentials()
             // history.push("/")
             // setUserName(username) TODO:
+        })
+        .then(res => {
+            setCredentials(res)
         })
         .catch(err => {
             console.error(err.message, err.code)
@@ -44,6 +48,7 @@ export function ContextProvider({children}) {
         return auth.signOut()
         .then(() => {
             resetData()
+            setCredentials(null)
         })
         .catch(err => {
             console.error(err)
@@ -52,25 +57,65 @@ export function ContextProvider({children}) {
     const signup = (email, pass, username) => {
         return auth.createUserWithEmailAndPassword(email, pass)
         .then(data => {
-            createUserData(data.user, username);
+            
             setEmail(data.user.email)
             setUserId(data.user.uid)
             setUserName(username)
             setSignupError("")
             history.push("/")
+            return createUserData(username);
         })
+        .then(()=> {
+            return getUserCredentials()
+        })
+        .then((res) => 
+            setCredentials(res)
+        )
         .catch(err => {
             console.log(err)
             setSignupError(err.message)
         })
-        
-        // .then(() => {
-        //     console.log("success")
-        // })
-        // .catch(err => {
-        //     console.error(err)
-        // })
     }
+    
+    
+   
+    useEffect(() => {
+        auth.onAuthStateChanged(async currUser => {
+            if (currUser) {
+                setUser(currUser)
+                // console.log(auth)
+                // let creds = await getUserCredentials()
+                // setCredentials(creds)
+                // setCredentials(createCredentials(user))
+                setLoading(false)
+                history.push("/")
+                clearErrors()
+                getUserCredentials()
+                .then(res => setCredentials(res))
+                .catch(err => console.log(err.message))
+            }
+            else {
+                // console.log("logging out")
+                setCredentials(null)
+                setUser(null)
+                setLoading(false)
+                // setCredentials(null)
+            }
+        })
+    }, [history])
+
+    // useEffect( () => {
+        
+    //     let creds;
+    //     console.log(creds)
+    //     async function fetchData() {
+    //         creds = await {...getUserCredentials()}
+    //     }
+    //     fetchData()
+    //     .then(() => {
+    //         setCredentials(creds)
+    //     })
+    // },[user])
     const value = {
         user,
         setUser,
@@ -82,27 +127,9 @@ export function ContextProvider({children}) {
         userId, 
         signupError, 
         loginError, 
-        // credentials, 
-        // setCredentials
+        credentials, 
+        setCredentials
     }
-    useEffect(() => {
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                setUser(user)
-                console.log(auth)
-                // setCredentials(createCredentials(user))
-                setLoading(false)
-                history.push("/")
-                clearErrors()
-            }
-            else {
-                // console.log("logging out")
-                setUser(null)
-                setLoading(false)
-                // setCredentials(null)
-            }
-        })
-    }, [history])
     return (
         <userContext.Provider value={value}>
             {!loading && children}
