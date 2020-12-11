@@ -10,8 +10,8 @@ import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
 import DeleteButton from "./DeleteButton"
 import CommentIcon from '@material-ui/icons/Comment';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import Comments from "./Comments"
+import LikeUnlikeButton from "./LikeUnlikeButton"
 // import NoImg from "../images/no-img.png"
 var relativeTime = require('dayjs/plugin/relativeTime')
 const useStyles = makeStyles({
@@ -52,7 +52,7 @@ const Post = ({postData}) => {
                 className={classes.image}
                 />
                 <CardContent className={classes.content}>
-                <DeleteButton className={classes.delete} userId={postData.userId} postId={postData.postId}/>
+                <DeleteButton className={classes.delete} postData={postData}/>
                 <Typography
                     variant="h5"
                     color="primary"
@@ -64,11 +64,7 @@ const Post = ({postData}) => {
                     {dayjs(postData.createdAt).fromNow()}
                 </Typography>
                 <AddCommentDialog open={open} setOpen={setOpen} postData={postData}/>
-                <Tooltip title="Like this post">
-                    <IconButton>
-                     <ThumbUpIcon />
-                </IconButton>
-                </Tooltip>
+                <LikeUnlikeButton postId={postData.postId}/>
                <span>{postData.likes} {likesString}</span>
                 <Tooltip title="Post a comment">
                     <IconButton onClick={handleClick}>

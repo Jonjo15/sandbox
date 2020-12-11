@@ -2,7 +2,7 @@ import {useUser} from "../context/context"
 import Tooltip from "@material-ui/core/Tooltip"
 import ProgressBar from "./ProgressBar"
 import {useHistory} from "react-router-dom"
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -10,7 +10,6 @@ import CardContent from '@material-ui/core/CardContent';
 import IconButton from "@material-ui/core/IconButton"
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-// import {useCredentials} from "../hooks/useCredentials" 
 import CardMedia from "@material-ui/core/CardMedia"
 import NoImg from "../images/no-img.png"
 import UpdateDetails from "./UpdateDetails"
@@ -52,7 +51,6 @@ export default function Profile({setError}) {
     const [imageUrl, setImageUrl] = useState(img)
     const classes = useStyles();
     const history = useHistory()
-    // const [error, setError] = useState("")
     const { logout, credentials} = useUser()
     const [open, setOpen] = useState(false)
     const [file, setFile] = useState(null)
@@ -82,9 +80,6 @@ export default function Profile({setError}) {
       const fileInput = document.getElementById('imageInput');
       fileInput.click();
     }
-    useEffect(() => {
-      console.log(credentials)
-    },[credentials])
     return (
         <Card className={classes.root}>
           {credentials && (<CardMedia
@@ -109,7 +104,6 @@ export default function Profile({setError}) {
           
           {file && <ProgressBar file={file} setFile={setFile} setImageUrl={setImageUrl}/>}
           {credentials && (<CardContent>
-              {/* {error && <Typography color="error">{error}</Typography>} */}
             {credentials && <Typography className={classes.title} color="primary">
               Username: {credentials.username}
             </Typography>}

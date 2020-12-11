@@ -33,8 +33,6 @@ export function ContextProvider({children}) {
             setEmail(data.user.email)
             setUserId(data.user.uid)
             return getUserCredentials()
-            // history.push("/")
-            // setUserName(username) TODO:
         })
         .then(res => {
             setCredentials(res)
@@ -83,10 +81,6 @@ export function ContextProvider({children}) {
         auth.onAuthStateChanged(async currUser => {
             if (currUser) {
                 setUser(currUser)
-                // console.log(auth)
-                // let creds = await getUserCredentials()
-                // setCredentials(creds)
-                // setCredentials(createCredentials(user))
                 setLoading(false)
                 history.push("/")
                 clearErrors()
@@ -95,27 +89,13 @@ export function ContextProvider({children}) {
                 .catch(err => console.log(err.message))
             }
             else {
-                // console.log("logging out")
                 setCredentials(null)
                 setUser(null)
                 setLoading(false)
-                // setCredentials(null)
             }
         })
     }, [history])
-
-    // useEffect( () => {
-        
-    //     let creds;
-    //     console.log(creds)
-    //     async function fetchData() {
-    //         creds = await {...getUserCredentials()}
-    //     }
-    //     fetchData()
-    //     .then(() => {
-    //         setCredentials(creds)
-    //     })
-    // },[user])
+    
     const value = {
         user,
         setUser,

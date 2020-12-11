@@ -6,10 +6,10 @@ import { DialogContentText } from '@material-ui/core';
 import {deletePost} from "../firebase/firestoreActions"
 
 
-export default function DeletePostDialog({open, setOpen, postId}) {
+export default function DeletePostDialog({open, setOpen, postData}) {
   const handlePost = e => {
     try {
-        deletePost(postId)
+        deletePost(postData)
     }
     catch {
         console.log("error")

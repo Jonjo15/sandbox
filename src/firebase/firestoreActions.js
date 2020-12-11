@@ -18,7 +18,6 @@ export const getUserCredentials = async () => {
     .get()
     .then(function(doc) {
         if (doc.exists) {
-            console.log("Document data:", doc.data());
             credentials = {...doc.data()}
         } else {
             // doc.data() will be undefined in this case
@@ -76,11 +75,55 @@ export const createComment = (body, credentials, postData) => {
     })
     .catch(err => console.log(err.message))
 }
-
-export const deletePost = (postId) => {
-    firestore.collection("posts").doc(postId)
+export const likePost = (postId, username) => {
+    const likeObject = {
+        postId,
+        username,
+        userId: auth.currentUser.uid
+    }
+   return firestore.collection("likes").add(likeObject)
+   .then(() => {
+       return firestore.collection("posts").doc(postId).update("likes", increment(1))
+   })
+   .then(() => console.log("post liked"))
+   .catch(err => console.log(err.message))
+}
+export const unLikePost = (postId) => {
+    firestore.collection("likes").where("postId", "==", postId).where("userId", "==", auth.currentUser.uid).get()
+    .then(snap => {
+        snap.forEach(doc => doc.ref.delete())
+    })
+    .then(() => {
+       return firestore.collection("posts").doc(postId).update("likes", increment(-1))
+    })
+    .then(() => console.log("postUnlikedSuccessfuly"))
+    .catch(err => console.log(err.message))
+}
+export const deletePost = (postData) => {
+    const commentsOnPost = postData.comments > 0 ? firestore.collection("comments").where("postId", "==", postData.postId) : false
+    firestore.collection("posts").doc(postData.postId)
     .delete()
-    .then(() => console.log("post deleted"))
+    .then(() => {
+        if (commentsOnPost) {
+            return commentsOnPost.get()
+        }
+        else {
+            return {}
+        }
+    })
+    .then((data) => {
+        if (data.empty) {
+            console.log("No comments to delete")
+            return
+        }
+        else {
+           data.forEach(doc => {
+               doc.ref.delete()
+           })
+           return 
+        }
+    })
+    .then(() => console.log("Post and its comments deleted"))
     .catch(err => console.error(err.message)) 
 }
 export const deleteComment = (commentId, postId) => {
