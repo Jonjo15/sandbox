@@ -8,6 +8,11 @@ export const updateUserDetails =async (bio, website) => {
         console.log("Error getting documents: ", error);
     });
 }
+export const createNotification = () => {
+    let notificationObject = {}
+    //todo finish
+    return notificationObject
+}
 export const getUserCredentials = async () => {
     if (!auth.currentUser) {
 

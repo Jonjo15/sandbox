@@ -20,7 +20,7 @@ export default function Comments({postData}) {
     const {comments} = useComments(postData.postId);
     dayjs.extend(relativeTime)
     const commentMarkUp = comments.map((comment, index) => 
-    (<Card key={comment.commentId}>
+    (<Card className="comment-card" key={comment.commentId}>
         <Grid container>
             <Grid item sm>
                 <img className="comment-img" src={comment.imageUrl} alt="profile"/>

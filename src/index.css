@@ -49,3 +49,6 @@ a {
   width: 150px;
   object-fit: cover;
 }
+.comment-card {
+  margin-bottom: 15px;
+}
