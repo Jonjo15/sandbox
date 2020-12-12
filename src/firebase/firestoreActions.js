@@ -8,10 +8,22 @@ export const updateUserDetails =async (bio, website) => {
         console.log("Error getting documents: ", error);
     });
 }
-export const createNotification = () => {
-    let notificationObject = {}
+export const createNotification = (username, postData, type) => {
+    let notificationObject = {
+        sender: username,
+        postId: postData.postId,
+        type,
+        createdAt: new Date().toISOString(),
+        recipient: postData.userId,
+        seen: false,
+    }
+    if (auth.currentUser.uid === notificationObject.recipient) {
+        return
+    }
+    firestore.collection("notifications").add(notificationObject)
+    .then(() => console.log("notification added successfully"))
+    .catch(err => console.log(err.message))
     //todo finish
-    return notificationObject
 }
 export const getUserCredentials = async () => {
     if (!auth.currentUser) {
@@ -76,36 +88,42 @@ export const createComment = (body, credentials, postData) => {
        return firestore.collection("posts").doc(postData.postId).update("comments", increment(1))
     })
     .then(() => {
-        console.log("Comment created successfully");
+        return createNotification(credentials.username, postData, "comment")
     })
     .catch(err => console.log(err.message))
 }
-export const likePost = (postId, username) => {
+export const likePost = (postData, username) => {
+    //check if already liked
     const likeObject = {
-        postId,
+        postId: postData.postId,
         username,
         userId: auth.currentUser.uid
     }
    return firestore.collection("likes").add(likeObject)
    .then(() => {
-       return firestore.collection("posts").doc(postId).update("likes", increment(1))
+       return firestore.collection("posts").doc(postData.postId).update("likes", increment(1))
+   })
+   .then(() => {
+       return createNotification(username, postData, "like")
    })
    .then(() => console.log("post liked"))
    .catch(err => console.log(err.message))
 }
-export const unLikePost = (postId) => {
-    firestore.collection("likes").where("postId", "==", postId).where("userId", "==", auth.currentUser.uid).get()
+export const unLikePost = (postData) => {
+    //check if already has zero likes
+    firestore.collection("likes").where("postId", "==", postData.postId).where("userId", "==", auth.currentUser.uid).get()
     .then(snap => {
         snap.forEach(doc => doc.ref.delete())
     })
     .then(() => {
-       return firestore.collection("posts").doc(postId).update("likes", increment(-1))
+       return firestore.collection("posts").doc(postData.postId).update("likes", increment(-1))
     })
+    //remove notification
     .then(() => console.log("postUnlikedSuccessfuly"))
     .catch(err => console.log(err.message))
 }
-export const deletePost = (postData) => {
-    const commentsOnPost = postData.comments > 0 ? firestore.collection("comments").where("postId", "==", postData.postId) : false
+export const deletePost = async (postData) => {
+    const commentsOnPost = await postData.comments > 0 ? firestore.collection("comments").where("postId", "==", postData.postId) : false
     firestore.collection("posts").doc(postData.postId)
     .delete()
     .then(() => {
@@ -113,20 +131,16 @@ export const deletePost = (postData) => {
             return commentsOnPost.get()
         }
         else {
-            return {}
+            return []
         }
     })
     .then((data) => {
-        if (data.empty) {
-            console.log("No comments to delete")
+        if (data === []) {
             return
         }
-        else {
-           data.forEach(doc => {
+            data.forEach(doc => {
                doc.ref.delete()
            })
-           return 
-        }
     })
     .then(() => console.log("Post and its comments deleted"))
     .catch(err => console.error(err.message)) 

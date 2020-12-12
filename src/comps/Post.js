@@ -64,7 +64,7 @@ const Post = ({postData}) => {
                     {dayjs(postData.createdAt).fromNow()}
                 </Typography>
                 <AddCommentDialog open={open} setOpen={setOpen} postData={postData}/>
-                <LikeUnlikeButton postId={postData.postId}/>
+                <LikeUnlikeButton postData={postData}/>
                <span>{postData.likes} {likesString}</span>
                 <Tooltip title="Post a comment">
                     <IconButton onClick={handleClick}>

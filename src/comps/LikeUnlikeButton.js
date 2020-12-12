@@ -7,47 +7,66 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import {likePost, unLikePost} from "../firebase/firestoreActions"
 import {useUser} from "../context/context"
 import useLikes from "../hooks/useLikes"
-export default function LikeUnlikeButton({postId}) {
+export default function LikeUnlikeButton({postData}) {
     const {credentials: {username}} = useUser()
     const [loading, setLoading] = useState(false)
-    const {likes, setLikes} = useLikes(postId);
-    const handleLike =async e => {
-        if (loading) {
-            return;
-        }
-        setLoading(true)
-        try {
-            if(likes.length === 0) {
-                await likePost(postId, username)
-                setLoading(false)
-            }
-            else if(likes.length === 1) {
-                await unLikePost(postId)
-                setLoading(false)
-                setLikes([])
-            }
-            else {
-                setLoading(false)
-                return
+    const {likes, setLikes} = useLikes(postData);
+    // const handleLike =async e => {
+    //     // console.log(loading)
+    //     if (loading) {
+    //         return;
+    //     }
+    //     setLoading(true)
+    //     try {
+    //         if(likes.length === 0) {
+    //             console.log(likes.length)
+    //             await likePost(postData, username)   
+    //             setLoading(false)
                 
-            }
-        }
-        catch {
-            console.log("something went wrong Like/Unlike")
-            setLoading(false)
-        }
+    //         }
+    //         else if (likes.length === 1) {
+    //             console.log(likes.length)
+    //             await unLikePost(postData)
+    //             setLoading(false)
+    //             setLikes([])
+    //         }
+    //         else {
+    //             setLoading(false)
+    //             return
+    //         }
+    //     }
+        // catch {
+        //     console.log("something went wrong Like/Unlike")
+        //     setLoading(false)
+        // }
         
-    }
+    
     let likeMarkup = likes.length === 0 ? (
         <Tooltip title="Like this post">
-            <IconButton onClick={handleLike}>
+            <IconButton disabled={loading} onClick={async (e) => {
+                if (likes.length > 0) {
+                    return
+                }
+                setLoading(true)
+                await likePost(postData, username)
+                setLoading(false)
+            }
+        }>
                 <FavoriteBorderIcon />
             </IconButton>
         </Tooltip>)
         : 
         (
         <Tooltip title="Unlike this post">
-            <IconButton onClick={handleLike}>
+            <IconButton disabled={loading} onClick={async () => {
+                if (likes.length !== 1) {
+                    return
+                }
+                setLoading(true)
+                await unLikePost(postData)
+                setLoading(false)
+                setLikes([])
+            }}>
                  <FavoriteIcon />
             </IconButton>
         </Tooltip>
