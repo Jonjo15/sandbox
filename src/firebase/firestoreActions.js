@@ -92,26 +92,30 @@ export const createComment = (body, credentials, postData) => {
     })
     .catch(err => console.log(err.message))
 }
-export const likePost = (postData, username) => {
+export const likePost = (postData, username, length) => {
     //check if already liked
-    const likeObject = {
+    if (length === 0 ) {
+        const likeObject = {
         postId: postData.postId,
         username,
         userId: auth.currentUser.uid
+        }
+        return firestore.collection("likes").add(likeObject)
+        .then(() => {
+            return firestore.collection("posts").doc(postData.postId).update("likes", increment(1))
+        })
+        .then(() => {
+            return createNotification(username, postData, "like")
+        })
+        .then(() => console.log("post liked"))
+        .catch(err => console.log(err.message))
     }
-   return firestore.collection("likes").add(likeObject)
-   .then(() => {
-       return firestore.collection("posts").doc(postData.postId).update("likes", increment(1))
-   })
-   .then(() => {
-       return createNotification(username, postData, "like")
-   })
-   .then(() => console.log("post liked"))
-   .catch(err => console.log(err.message))
+    
 }
-export const unLikePost = (postData) => {
+export const unLikePost = (postData, length) => {
     //check if already has zero likes
-    firestore.collection("likes").where("postId", "==", postData.postId).where("userId", "==", auth.currentUser.uid).get()
+    if (length === 1) {
+        firestore.collection("likes").where("postId", "==", postData.postId).where("userId", "==", auth.currentUser.uid).get()
     .then(snap => {
         snap.forEach(doc => doc.ref.delete())
     })
@@ -121,6 +125,8 @@ export const unLikePost = (postData) => {
     //remove notification
     .then(() => console.log("postUnlikedSuccessfuly"))
     .catch(err => console.log(err.message))
+    }
+    
 }
 export const deletePost = async (postData) => {
     const commentsOnPost = await postData.comments > 0 ? firestore.collection("comments").where("postId", "==", postData.postId) : false
