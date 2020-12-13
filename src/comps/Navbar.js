@@ -8,7 +8,8 @@ import AddPostDialog from "./AddPostDialog"
 import React, {useState} from 'react'
 import HomeIcon from '@material-ui/icons/Home';
 import AddIcon from "@material-ui/icons/Add"
-import NotificationsIcon from '@material-ui/icons/Notifications';
+// import NotificationsIcon from '@material-ui/icons/Notifications';
+import Notifications from "./Notifications"
 import { useUser } from "../context/context";
 
 export default function Navbar() {
@@ -25,9 +26,7 @@ export default function Navbar() {
     <Tooltip title="Add a new post">
         <IconButton onClick={handleClick}><AddIcon></AddIcon></IconButton>
     </Tooltip>
-    <Tooltip title="View Notificiations">
-        <IconButton><NotificationsIcon /></IconButton>
-    </Tooltip>
+    <Notifications />
     </>)
      : 
      (<><Button component={Link} to="/login" color="inherit">Log In</Button>

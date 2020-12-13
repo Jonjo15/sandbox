@@ -5,10 +5,12 @@ const useNotifications = () => {
     const [notifications, setNotifications] = useState([])
 
     useEffect(() => {
-        const unsub = firestore.collection("notifications").where("recipient", "==", auth.currentUser.uid)
+        const unsub = firestore.collection("notifications")
+        .where("recipient", "==", auth.currentUser.uid)
         .onSnapshot(snap => {
             let docs = []
             snap.forEach(doc => {
+                console.log(doc.data())
                 docs.push({notificationId: doc.id, ...doc.data()})
             })
             setNotifications(docs)
