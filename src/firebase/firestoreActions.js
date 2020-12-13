@@ -25,6 +25,9 @@ export const createNotification = (username, postData, type) => {
     .catch(err => console.log(err.message))
     //todo finish
 }
+export const markNotificationsSeen = (notIds) => { 
+    //TODO:
+}
 export const getUserCredentials = async () => {
     if (!auth.currentUser) {
 
