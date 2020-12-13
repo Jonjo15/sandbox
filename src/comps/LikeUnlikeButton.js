@@ -10,8 +10,7 @@ import useLikes from "../hooks/useLikes"
 export default function LikeUnlikeButton({postData}) {
     const {credentials: {username}} = useUser()
     const [loading, setLoading] = useState(false)
-    const {likes} = useLikes(postData);
-    const [length, setLength] = useState(likes.length)
+    const {likes, length, setLength} = useLikes(postData);
     const handleLike =async e => {
         // console.log(loading)
         if (loading) {
@@ -52,7 +51,7 @@ export default function LikeUnlikeButton({postData}) {
         (
         <Tooltip title="Unlike this post">
             <IconButton onClick={handleLike}>
-                 <FavoriteIcon />
+                 <FavoriteIcon color="secondary"/>
             </IconButton>
         </Tooltip>
         )

@@ -1,10 +1,12 @@
 import React, {useState} from 'react'
+import {Link} from "react-router-dom"
 import IconButton from "@material-ui/core/IconButton"
 import Tooltip from "@material-ui/core/Tooltip"
 import NotificationsIcon from "@material-ui/icons/Notifications"
 import useNotifications from "../hooks/useNotifications"
 import Badge from '@material-ui/core/Badge';
 import MenuItem from "@material-ui/core/MenuItem"
+import Typography from "@material-ui/core/Typography"
 import MessageIcon from '@material-ui/icons/Message';
 import Menu from "@material-ui/core/Menu"
 import dayjs from "dayjs"
@@ -28,6 +30,7 @@ export default function Notifications() {
         if (notifications.filter(not => not.seen === false ).length > 0 ) {
             try {
                 let notsToMarkSeen= notifications.filter(not => not.seen === false).map(not => not.notificationId)
+                console.log(notsToMarkSeen)
                 await markNotificationsSeen(notsToMarkSeen)
             }
             catch {
@@ -37,9 +40,21 @@ export default function Notifications() {
     }
     const menuItems = notifications.length > 0 ? 
     (notifications.map(not => {
-        const notIcon = not.type ==="comment" ? (<MessageIcon style={{marginRight: 5}}/>) : (<FavoriteIcon style={{marginRight: 5}}/>)
+        const iconColor = 'secondary';
+        const notIcon = not.type ==="comment" ? (<MessageIcon color={iconColor} style={{marginRight: 5}}/>)
+         : 
+         (<FavoriteIcon color={iconColor} style={{marginRight: 5}}/>)
         const verb = not.type === "comment" ? "commented on your post" : "liked your post"
-        return (<MenuItem onClick={handleClose} key={not.notificationId}>{notIcon}{not.sender} {verb} <small className="notification-time">{dayjs(not.createdAt).fromNow()}</small></MenuItem>)
+        return (
+        <MenuItem onClick={handleClose} key={not.notificationId}>
+            {notIcon}
+            <Typography
+             component={Link}
+             to={`/users/${not.recipient}/post/${not.postId}`}
+             >
+                {not.sender} {verb} <small className="notification-time">{dayjs(not.createdAt).fromNow()}</small>
+            </Typography>
+        </MenuItem>)
     })) 
     :
      ( <MenuItem >You have no notifications yet</MenuItem>) 

@@ -25,8 +25,13 @@ export const createNotification = (username, postData, type) => {
     .catch(err => console.log(err.message))
     //todo finish
 }
-export const markNotificationsSeen = (notIds) => { 
+export const markNotificationsSeen = async (notIds) => { 
     //TODO:
+    for(let i = 0; i < notIds.length; i++) {
+        await firestore.collection("notifications").doc(notIds[i]).update({seen: true})
+    }
+    
+
 }
 export const getUserCredentials = async () => {
     if (!auth.currentUser) {

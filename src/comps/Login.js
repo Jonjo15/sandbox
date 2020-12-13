@@ -1,4 +1,6 @@
 import React, {useState} from 'react'
+import {Redirect} from "react-router-dom"
+import {auth} from "../firebase/config"
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,37 +48,38 @@ export default function Login() {
             }
         }
     }
-    return (
-        <div>
-            <Grid container>
-                <Grid item sm></Grid>
-                <Grid item sm>
-                <form onSubmit={handleSubmit} noValidate className={classes.root}>
-                        {(error || loginError) && <TypoGraphy variant="body1" color="error">{error || loginError || ""}</TypoGraphy>}
-                    <TextField
-                        className={classes.field}
-                        fullWidth
-                        id="outlined-name"
-                        label="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        variant="filled"
-                    />
-                    <TextField
-                        className={classes.field}
-                        fullWidth
-                        label="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        variant="filled"
-                        type="password"
-                    />
-                     <Button fullWidth type="submit" color="primary" variant="contained">Submit</Button>
-                    </form>
-                    <small className={classes.small}>Don't have an account? Sign up <Link to="/signup">here</Link></small>
-                </Grid>
-                <Grid item sm></Grid>
+    const markUp = auth.currentUser ? (<Redirect to="/"/>) : (<div>
+        <Grid container>
+            <Grid item sm></Grid>
+            <Grid item sm>
+            <form onSubmit={handleSubmit} noValidate className={classes.root}>
+                    {(error || loginError) && <TypoGraphy variant="body1" color="error">{error || loginError || ""}</TypoGraphy>}
+                <TextField
+                    className={classes.field}
+                    fullWidth
+                    id="outlined-name"
+                    label="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    variant="filled"
+                />
+                <TextField
+                    className={classes.field}
+                    fullWidth
+                    label="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    variant="filled"
+                    type="password"
+                />
+                 <Button fullWidth type="submit" color="primary" variant="contained">Submit</Button>
+                </form>
+                <small className={classes.small}>Don't have an account? Sign up <Link to="/signup">here</Link></small>
             </Grid>
-        </div>
+            <Grid item sm></Grid>
+        </Grid>
+    </div>)
+    return (
+        markUp
     )
 }
