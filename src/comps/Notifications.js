@@ -39,14 +39,15 @@ export default function Notifications() {
         }
     }
     const menuItems = notifications.length > 0 ? 
-    (notifications.map(not => {
+    (notifications.map((not, i) => {
         const iconColor = 'secondary';
         const notIcon = not.type ==="comment" ? (<MessageIcon color={iconColor} style={{marginRight: 5}}/>)
          : 
          (<FavoriteIcon color={iconColor} style={{marginRight: 5}}/>)
         const verb = not.type === "comment" ? "commented on your post" : "liked your post"
-        return (
-        <MenuItem onClick={handleClose} key={not.notificationId}>
+        if (i< 10) {
+            return (
+            <MenuItem onClick={handleClose} key={not.notificationId}>
             {notIcon}
             <Typography
              component={Link}
@@ -54,7 +55,12 @@ export default function Notifications() {
              >
                 {not.sender} {verb} <small className="notification-time">{dayjs(not.createdAt).fromNow()}</small>
             </Typography>
-        </MenuItem>)
+            </MenuItem>)
+        }
+        else {
+            return null
+        }
+        
     })) 
     :
      ( <MenuItem >You have no notifications yet</MenuItem>) 

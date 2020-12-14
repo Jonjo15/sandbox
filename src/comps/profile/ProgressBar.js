@@ -1,5 +1,5 @@
-import useStorage from "../hooks/useStorage"
-import {useUser} from "../context/context"
+import useStorage from "../../hooks/useStorage"
+import {useUser} from "../../context/context"
 import {useEffect} from "react"
 const ProgressBar = ({setImageUrl, file, setFile}) => {
     const {url, progress} = useStorage(file)

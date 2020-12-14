@@ -130,6 +130,12 @@ export const unLikePost = (postData, length) => {
     .then(() => {
        return firestore.collection("posts").doc(postData.postId).update("likes", increment(-1))
     })
+    .then(() => {
+        return firestore.collection("notifications").where("postId", "==", postData.postId).where("seen", "==", false).get()
+    })
+    .then(snap => {
+        snap.forEach(doc => doc.ref.delete())
+    })
     //remove notification
     .then(() => console.log("postUnlikedSuccessfuly"))
     .catch(err => console.log(err.message))

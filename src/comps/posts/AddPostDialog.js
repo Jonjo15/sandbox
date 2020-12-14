@@ -4,9 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import {createPost} from "../firebase/firestoreActions"
+import {createPost} from "../../firebase/firestoreActions"
 // import { useCredentials } from '../hooks/useCredentials';
-import {useUser} from "../context/context"
+import {useUser} from "../../context/context"
 // import DialogContentText from '@material-ui/core/DialogContentText';
 // import DialogTitle from '@material-ui/core/DialogTitle';
 
@@ -33,8 +33,6 @@ export default function AddPostDialog({open, setOpen}) {
         <DialogContent className="post-dialog">
           <TextField
             autoFocus
-            multiline
-            rows="3"
             id="name"
             label="What's on your mind?"
             type="text"

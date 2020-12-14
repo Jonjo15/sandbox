@@ -6,6 +6,7 @@ const useNotifications = () => {
 
     useEffect(() => {
         const unsub = firestore.collection("notifications")
+        .orderBy("createdAt", "desc")
         .where("recipient", "==", auth.currentUser.uid)
         // .orderBy("createdAt", "desc")
         .onSnapshot(snap => {

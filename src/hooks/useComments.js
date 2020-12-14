@@ -5,7 +5,9 @@ const useComments = (postId) => {
     const [comments, setComments] = useState([])
 
     useEffect(() => {
-        const unsub = firestore.collection("comments").where("postId", "==", postId)
+        const unsub = firestore.collection("comments")
+        .orderBy("createdAt")
+        .where("postId", "==", postId)
         .onSnapshot(snap => {
             let docs = []
             snap.forEach(doc => {

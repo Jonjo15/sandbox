@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from "@material-ui/core/Tooltip"
 import Button from '@material-ui/core/Button';
 import IconButton from "@material-ui/core/IconButton"
-import AddPostDialog from "./AddPostDialog"
+import AddPostDialog from "./posts/AddPostDialog"
 import React, {useState} from 'react'
 import HomeIcon from '@material-ui/icons/Home';
 import AddIcon from "@material-ui/icons/Add"

@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import {Redirect} from "react-router-dom"
-import {auth} from "../firebase/config"
+// import {auth} from "../firebase/config"
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
 import { makeStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button"
 import TypoGraphy from "@material-ui/core/Typography"
-import {validateLogin} from "../util/validators"
-import { useUser } from '../context/context';
+import {validateLogin} from "../../util/validators"
+import { useUser } from '../../context/context';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 export default function Login() {
     const classes = useStyles()
-    const {login, loginError} = useUser()
+    const {login, loginError, user} = useUser()
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [error, setError] = useState("")
@@ -48,7 +48,7 @@ export default function Login() {
             }
         }
     }
-    const markUp = auth.currentUser ? (<Redirect to="/"/>) : (<div>
+    const markUp = user ? (<Redirect to="/"/>) : (<div>
         <Grid container>
             <Grid item sm></Grid>
             <Grid item sm>

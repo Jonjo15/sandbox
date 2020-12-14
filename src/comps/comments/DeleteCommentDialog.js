@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import { DialogContentText } from '@material-ui/core';
-import {deleteComment} from "../firebase/firestoreActions"
+import {deleteComment} from "../../firebase/firestoreActions"
 
 
 export default function DeleteCommentDialog({open, setOpen, commentId, postId}) {

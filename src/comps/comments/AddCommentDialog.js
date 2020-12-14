@@ -4,9 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import {createComment} from "../firebase/firestoreActions"
+import {createComment} from "../../firebase/firestoreActions"
 // import { useCredentials } from '../hooks/useCredentials';
-import {useUser} from "../context/context"
+import {useUser} from "../../context/context"
 
 export default function AddCommentDialog({open, setOpen, postData}) {
     //   const [open, setOpen] = React.useState(false);

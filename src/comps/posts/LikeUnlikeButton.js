@@ -4,9 +4,9 @@ import IconButton from "@material-ui/core/IconButton"
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 // import ThumbUpIcon from "@material-ui/icons/ThumbUp"
-import {likePost, unLikePost} from "../firebase/firestoreActions"
-import {useUser} from "../context/context"
-import useLikes from "../hooks/useLikes"
+import {likePost, unLikePost} from "../../firebase/firestoreActions"
+import {useUser} from "../../context/context"
+import useLikes from "../../hooks/useLikes"
 export default function LikeUnlikeButton({postData}) {
     const {credentials: {username}} = useUser()
     const [loading, setLoading] = useState(false)

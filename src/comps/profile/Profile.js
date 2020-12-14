@@ -1,4 +1,4 @@
-import {useUser} from "../context/context"
+import {useUser} from "../../context/context"
 import Tooltip from "@material-ui/core/Tooltip"
 import ProgressBar from "./ProgressBar"
 import {useHistory} from "react-router-dom"
@@ -11,7 +11,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from "@material-ui/core/CardMedia"
-import NoImg from "../images/no-img.png"
+import NoImg from "../../images/no-img.png"
 import UpdateDetails from "./UpdateDetails"
 import EditIcon from '@material-ui/icons/Edit';
 const useStyles = makeStyles({
@@ -20,6 +20,7 @@ const useStyles = makeStyles({
       minHeight: 350,
       position: "relative",
       marginRight: 20,
+      marginTop: 15,
       marginLeft: 15, 
       display: "block"
     },

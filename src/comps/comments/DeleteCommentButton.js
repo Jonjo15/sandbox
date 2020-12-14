@@ -1,5 +1,5 @@
 import IconButton from "@material-ui/core/IconButton"
-import {auth} from "../firebase/config"
+import {auth} from "../../firebase/config"
 import {useState} from "react"
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteCommentDialog from "./DeleteCommentDialog"

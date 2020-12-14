@@ -5,11 +5,11 @@ import React, {useState} from 'react'
 // import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
-import Post from "./Post"
+import Post from "../posts/Post"
 // import DeletePostDialog from "./DeletePostDialog"
 // import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
-import Profile from './Profile'
-import useFirestore from '../hooks/usePosts'
+import Profile from '../profile/Profile'
+import useFirestore from '../../hooks/usePosts'
 export default function Home() {
     // const {user} = useUser();
     const {posts} = useFirestore("posts")

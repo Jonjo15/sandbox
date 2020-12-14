@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import Grid from "@material-ui/core/Grid"
-import {auth} from "../firebase/config"
+// import {auth} from "../firebase/config"
 import {Redirect} from "react-router-dom"
 import TextField from "@material-ui/core/TextField"
 import { makeStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button"
 import TypoGraphy from "@material-ui/core/Typography"
-import {validateSignup} from "../util/validators"
-import { useUser } from '../context/context';
+import {validateSignup} from "../../util/validators"
+import { useUser } from '../../context/context';
 import { Link} from "react-router-dom"
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 export default function Signup() {
     const classes = useStyles();
-    const {signup, signupError} = useUser()
+    const {signup, signupError, user} = useUser()
     const [email, setEmail] = useState("")
     const [userName, setUserName] = useState("")
     const [password, setPassword] = useState("")
@@ -51,7 +51,7 @@ export default function Signup() {
             }
         }
     }
-    const markUp = auth.currentUser ? (<Redirect to="/" />) : (<div>
+    const markUp = user ? (<Redirect to="/" />) : (<div>
         <Grid container>
             <Grid item sm></Grid>
             <Grid item sm className="grid-cont">
