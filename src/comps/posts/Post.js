@@ -64,8 +64,7 @@ const Post = ({postData}) => {
                 <CardContent className={classes.content} style={{paddingBottom: 0, position: "relative"}}>
                 <DeleteButton postData={postData}/>
                 <br />
-                <Typography className="post-time" component={Link}
-                    to={`/users/${postData.userId}/${postData.postId}`}  
+                <Typography className="post-time"   
                     variant="body2" 
                     color="textSecondary">
                     {dayjs(postData.createdAt).fromNow()}

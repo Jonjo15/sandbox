@@ -3,6 +3,7 @@ import Home from "./comps/pages/Home"
 import Login from "./comps/pages/Login";
 import Navbar from "./comps/Navbar";
 import Signup from "./comps/pages/Signup";
+import User from "./comps/pages/User"
 import {ContextProvider} from "./context/context"
 import PrivateRoute from "./comps/PrivateRoute"
 function App() {
@@ -18,6 +19,7 @@ function App() {
                 <PrivateRoute exact path="/" component={Home}/>
                 <Route  path="/signup" component={Signup}/>
                 <Route  path="/login" component={Login}/>
+                <Route exact path="/users/:userId" component={User}/>
               </Switch>
             </div>
           </ContextProvider>

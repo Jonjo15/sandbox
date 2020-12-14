@@ -2,6 +2,7 @@ import {useUser} from "../../context/context"
 import Tooltip from "@material-ui/core/Tooltip"
 import ProgressBar from "./ProgressBar"
 import {useHistory} from "react-router-dom"
+import EmailIcon from "@material-ui/icons/Email"
 import React, {useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -25,10 +26,14 @@ const useStyles = makeStyles({
       display: "block"
     },
     button: {
-        margin: "0 auto"
+        margin: "0 auto",
+        position: "absolute",
+        left: "30%",
+        top:"100%"
+
     },
     title: {
-      fontSize: 14,
+      fontSize: 20,
     },
     pos: {
       marginBottom: 12,
@@ -41,6 +46,10 @@ const useStyles = makeStyles({
       margin: "0 auto", 
       marginTop: 10,
       textAlign: "center"
+    },
+    action: {
+      display: "block",
+      position: "relative",
     },
     edit: {
       float: "right"
@@ -86,10 +95,10 @@ export default function Profile({setError}) {
           {credentials && (<CardMedia
           className={classes.image}
           component="img"
-          alt="Contemplative Reptile"
+          alt="Profile picture"
           height="140"
           image={credentials.imageUrl ? credentials.imageUrl : imageUrl}
-          title="Contemplative Reptile"
+          title="Profile picture"
         />)}
           <input
               type="file"
@@ -105,25 +114,26 @@ export default function Profile({setError}) {
           
           {file && <ProgressBar file={file} setFile={setFile} setImageUrl={setImageUrl}/>}
           {credentials && (<CardContent>
-            {credentials && <Typography className={classes.title} color="primary">
-              Username: {credentials.username}
-            </Typography>}
-            {credentials && <Typography className={classes.pos} color="primary">
-              Email: {credentials.email}
-            </Typography>}
+            <Typography variant="body1" className={classes.title} color="primary">
+              {credentials.username}
+            </Typography>
+            <div>
+                <EmailIcon style={{marginRight: 5, marginTop:5}} />
+                <Typography className={classes.pos} color="primary">
+              {credentials.email}
+                </Typography>
+            </div>
             {credentials.bio && <Typography>Bio: {credentials.bio}</Typography>}
             {credentials.website && <Typography>Website: {credentials.website}</Typography>}
           </CardContent>) } 
-      <CardActions> 
-
-        <Tooltip title="Edit your profile details">
-          <IconButton className={classes.edit} onClick={() => setOpen(true)}>
-            <EditIcon />
-        </IconButton>
-        </Tooltip>
-        
-        <UpdateDetails open={open} setOpen={setOpen}/>
-        <Button className={classes.button} onClick={handleClick} color="primary" variant="contained">Log Out</Button>
+        <CardActions className={classes.action}> 
+          <Tooltip title="Edit your profile details">
+            <IconButton className={classes.edit} onClick={() => setOpen(true)}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+          <UpdateDetails open={open} setOpen={setOpen}/>
+          <Button className={classes.button} onClick={handleClick} color="primary" variant="contained">Log Out</Button>
       </CardActions>
     </Card>
     )

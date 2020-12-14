@@ -18,8 +18,8 @@ export default function Comments({postData}) {
                 <img className="comment-img" src={comment.imageUrl} alt="profile"/>
             </Grid>
             <Grid style={{marginTop: 10}} item sm={4}>
-                <Typography component={Link}  to={`/users/${postData.userId}`} color="primary" variant="h5">{comment.username}</Typography>
-                <Typography variant="body2">{dayjs(postData.createdAt).fromNow()}</Typography>
+                <Typography component={Link}  to={`/users/${comment.userId}`} color="primary" variant="h5">{comment.username}</Typography>
+                <Typography color="textSecondary" variant="body2">{dayjs(postData.createdAt).fromNow()}</Typography>
                 <br />
             </Grid>
             <Grid item sm= {6} style={{marginTop: 25}}>
